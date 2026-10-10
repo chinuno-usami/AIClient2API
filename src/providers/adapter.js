@@ -1,6 +1,7 @@
 import { OpenAIResponsesApiService } from './openai/openai-responses-core.js';
 import { GeminiApiService } from './gemini/gemini-core.js';
 import { AntigravityApiService } from './gemini/antigravity-core.js';
+import { GeminiEnterpriseApiService } from './gemini/gemini-enterprise-core.js';
 import { OpenAIApiService } from './openai/openai-core.js';
 import { ClaudeApiService } from './claude/claude-core.js';
 import { KiroApiService } from './claude/claude-kiro.js';
@@ -236,6 +237,45 @@ export class AntigravityApiServiceAdapter extends ApiServiceAdapter {
             await this.antigravityApiService.initialize();
         }
         return this.antigravityApiService.getUsageLimits();
+    }
+}
+
+// Gemini Enterprise (Business AI Code) 服务适配器，复用 agy 的 WIF 登录凭证
+export class GeminiEnterpriseApiServiceAdapter extends ApiServiceAdapter {
+    constructor(config) {
+        super();
+        this.service = new GeminiEnterpriseApiService(config);
+    }
+
+    async generateContent(model, requestBody) {
+        return this.service.generateContent(model, requestBody);
+    }
+
+    async *generateContentStream(model, requestBody) {
+        yield* this.service.generateContentStream(model, requestBody);
+    }
+
+    async listModels() {
+        return this.service.listModels();
+    }
+
+    async refreshToken() {
+        if (!this.service.isInitialized) await this.service.initialize();
+        if (this.isExpiryDateNear() === true) {
+            logger.info('[Gemini Enterprise] Expiry date is near, refreshing token...');
+            return this.service.refreshAccessToken();
+        }
+        return false;
+    }
+
+    async forceRefreshToken() {
+        if (!this.service.isInitialized) await this.service.initialize();
+        logger.info('[Gemini Enterprise] Force refreshing token...');
+        return this.service.refreshAccessToken(true);
+    }
+
+    isExpiryDateNear() {
+        return this.service.isExpiryDateNear();
     }
 }
 
@@ -796,6 +836,7 @@ registerAdapter(MODEL_PROVIDER.OPENAI_CUSTOM, OpenAIApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.OPENAI_CUSTOM_RESPONSES, OpenAIResponsesApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.CLAUDE_CUSTOM, ClaudeApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.ANTIGRAVITY, AntigravityApiServiceAdapter);
+registerAdapter(MODEL_PROVIDER.GEMINI_ENTERPRISE, GeminiEnterpriseApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.KIRO_API, KiroApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.CODEX_API, CodexApiServiceAdapter);
 registerAdapter(MODEL_PROVIDER.GROK_CLI, GrokCliApiServiceAdapter);

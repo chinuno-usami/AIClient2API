@@ -51,6 +51,12 @@ function getBaseProviderConfigs() {
             icon: 'fa-rocket',
             defaultPath: 'configs/antigravity/'
         },
+        {
+            id: 'gemini-enterprise',
+            name: 'Gemini Enterprise (agy WIF)',
+            usageName: 'Gemini Enterprise',
+            icon: 'fa-building'
+        },
         { 
             id: 'claude-kiro-oauth', 
             name: t('dashboard.routing.nodeName.kiro'), 
@@ -447,6 +453,32 @@ function getProviderTypeFields(providerType) {
                 label: `${t('modal.provider.field.autopushBaseUrl')} <span class="optional-tag">${t('config.optional')}</span>`,
                 type: 'text',
                 placeholder: 'https://autopush-cloudcode-pa.sandbox.googleapis.com'
+            }
+        ],
+        'gemini-enterprise': [
+            {
+                id: 'GEMINI_ENTERPRISE_TOKEN_FILE_PATH',
+                label: `agy Token File <span class="optional-tag">${t('config.optional')}</span>`,
+                type: 'text',
+                placeholder: '~/.gemini/antigravity-cli/antigravity-oauth-token'
+            },
+            {
+                id: 'PROJECT_ID',
+                label: `${t('modal.provider.field.projectId')} <span class="optional-tag">${t('config.optional')}</span>`,
+                type: 'text',
+                placeholder: t('modal.provider.field.projectId.optional.placeholder')
+            },
+            {
+                id: 'GEMINI_ENTERPRISE_USER_TIER',
+                label: `User Tier <span class="optional-tag">${t('config.optional')}</span>`,
+                type: 'text',
+                placeholder: 'gcp-ge-plus-tier'
+            },
+            {
+                id: 'GEMINI_ENTERPRISE_BASE_URL',
+                label: `Base URL <span class="optional-tag">${t('config.optional')}</span>`,
+                type: 'text',
+                placeholder: 'https://businessaicode.googleapis.com'
             }
         ],
         'openai-iflow': [

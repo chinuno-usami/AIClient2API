@@ -79,6 +79,21 @@ export const PROVIDER_MODELS = {
         'gemini-claude-opus-4-6-thinking',
         'gpt-oss-120b-medium',
     ],
+    // Gemini Enterprise（agy WIF 登录）可用模型，来自 `agy models`
+    'gemini-enterprise': [
+        'gemini-3.8-flash-medium',
+        'gemini-3.8-flash-high',
+        'gemini-3.8-flash-low',
+        'gemini-3.7-flash-high',
+        'gemini-3.7-flash-medium',
+        'gemini-3.7-flash-low',
+        'gemini-3.6-flash-high',
+        'gemini-3.6-flash-medium',
+        'gemini-3.6-flash-low',
+        'gemini-3.1-pro-high',
+        'gemini-3.1-pro-low',
+        'gemini-3.5-flash-lite',
+    ],
     'claude-custom': [],
     'claude-kiro-oauth': [
         'gpt-5.6-sol',

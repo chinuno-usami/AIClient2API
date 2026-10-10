@@ -8,6 +8,7 @@ let latestSnippetFormat = 'markdown';
 const recommendedModelMap = {
     'gemini-cli-oauth': 'gemini-3-flash-preview',
     'gemini-antigravity': 'gemini-3-flash',
+    'gemini-enterprise': 'gemini-3.8-flash-medium',
     'claude-custom': 'claude-sonnet-4-5',
     'claude-kiro-oauth': 'claude-sonnet-4-5',
     'openai-custom': 'gpt-5.5',

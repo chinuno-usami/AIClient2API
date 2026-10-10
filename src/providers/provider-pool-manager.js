@@ -1,4 +1,6 @@
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import { getServiceAdapter, getRegisteredProviders, invalidateServiceAdapter } from './adapter.js';
 import logger from '../utils/logger.js';
 import { MODEL_PROVIDER, getProtocolPrefix } from '../utils/common.js';
@@ -50,6 +52,7 @@ export class ProviderPoolManager {
     static DEFAULT_HEALTH_CHECK_MODELS = {
         'gemini-cli-oauth': 'gemini-3-flash-preview',
         'gemini-antigravity': 'gemini-3-flash',
+        'gemini-enterprise': 'gemini-3.8-flash-low',
         'claude-custom': 'claude-sonnet-4-5',
         'claude-kiro-oauth': 'claude-sonnet-4-5',
         'openai-custom': 'gpt-5.5',
@@ -155,6 +158,10 @@ export class ProviderPoolManager {
                     configPath = config.GEMINI_OAUTH_CREDS_FILE_PATH;
                 } else if (providerType.startsWith('gemini-antigravity')) {
                     configPath = config.ANTIGRAVITY_OAUTH_CREDS_FILE_PATH;
+                } else if (providerType.startsWith('gemini-enterprise')) {
+                    // 未配置时使用 agy 默认凭证路径，并展开 ~
+                    const p = config.GEMINI_ENTERPRISE_TOKEN_FILE_PATH || '~/.gemini/antigravity-cli/antigravity-oauth-token';
+                    configPath = p.startsWith('~/') ? path.join(os.homedir(), p.slice(2)) : p;
                 } else if (providerType.startsWith('openai-qwen')) {
                     configPath = config.QWEN_OAUTH_CREDS_FILE_PATH;
                 } else if (providerType.startsWith('openai-iflow')) {
@@ -173,7 +180,8 @@ export class ProviderPoolManager {
                     try {
                         const fileContent = fs.readFileSync(configPath, 'utf-8');
                         const credData = JSON.parse(fileContent);
-                        const rawExpiryTime = credData.expiry_date ?? credData.expiry ?? credData.expires_at ?? credData.expiresAt;
+                        // agy 凭证文件将 expiry 嵌套在 token 对象中
+                        const rawExpiryTime = credData.expiry_date ?? credData.expiry ?? credData.expires_at ?? credData.expiresAt ?? credData.token?.expiry;
                         let expiryTime = null;
                         if (typeof rawExpiryTime === 'number') {
                             expiryTime = rawExpiryTime;

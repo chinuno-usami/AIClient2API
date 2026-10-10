@@ -184,6 +184,7 @@ function getProviderDisplayName(providerType) {
     const displayNames = {
         'gemini-cli-oauth': 'Gemini CLI (OAuth)',
         'gemini-antigravity': 'Gemini Antigravity',
+        'gemini-enterprise': 'Gemini Enterprise',
         'claude-custom': 'Claude Custom',
         'claude-kiro-oauth': 'Claude Kiro (OAuth)',
         'openai-custom': 'OpenAI Custom',

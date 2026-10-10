@@ -585,6 +585,7 @@ export async function getProviderStatus(config, options = {}) {
         'claude-kiro-oauth': 'KIRO_OAUTH_CREDS_FILE_PATH',
         'openai-qwen-oauth': 'QWEN_OAUTH_CREDS_FILE_PATH',
         'gemini-antigravity': 'ANTIGRAVITY_OAUTH_CREDS_FILE_PATH',
+        'gemini-enterprise': 'GEMINI_ENTERPRISE_TOKEN_FILE_PATH',
         'openai-iflow': 'IFLOW_TOKEN_FILE_PATH',
         'forward-api': 'FORWARD_BASE_URL',
         'grok-web': 'GROK_COOKIE_TOKEN',
